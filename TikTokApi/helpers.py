@@ -1,6 +1,5 @@
-import TikTokApi
-from TikTokApi.browser_utilities.browser import browser
-from urllib.parse import quote, urlencode
+import asyncio
+
 from .exceptions import *
 
 import re
@@ -42,3 +41,13 @@ def extract_video_id_from_url(url, headers={}):
             "URL format not supported. Below is an example of a supported url.\n"
             "https://www.tiktok.com/@therock/video/6829267836783971589"
         )
+
+
+def get_or_create_event_loop():
+    try:
+        return asyncio.get_event_loop()
+    except RuntimeError as ex:
+        if "There is no current event loop in thread" in str(ex):
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            return asyncio.get_event_loop()

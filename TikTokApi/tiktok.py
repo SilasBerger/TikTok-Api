@@ -21,6 +21,7 @@ from .api.user import User
 from .api.video import Video
 from .browser_utilities.browser import browser
 from .exceptions import *
+from .helpers import get_or_create_event_loop
 from .utilities import LOGGER_NAME
 
 os.environ["no_proxy"] = "127.0.0.1,localhost"
@@ -202,7 +203,7 @@ class TikTokApi:
             )
 
         if self._signer_url is None:
-            self._browser = asyncio.get_event_loop().run_until_complete(
+            self._browser = get_or_create_event_loop().run_until_complete(
                 asyncio.gather(browser.create(**kwargs))
             )[0]
 
